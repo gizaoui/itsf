@@ -1,0 +1,10 @@
+**/target/
+**/.settings/
+.classpath
+.project
+**/SwaggerCodeGenExample/
+**/README.md
+**/.openapi-generator
+**/.openapi-generator-ignore
+**/.vscode/
+

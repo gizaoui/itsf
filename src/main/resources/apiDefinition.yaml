@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+   version: 1.0.0
+   title: Swagger Userstore
+   license:
+      name: MIT
+
+servers:
+-  url: "http://localhost:9090/itsf"
+paths:
+
+   /service:
+      post:
+         summary: Create a service
+         operationId: createService
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     $ref: '#/components/schemas/ServicesDto'
+         responses:
+            '201':
+               description: Null response
+            default:
+               description: unexpected error
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/Error'
+
+   /service/find/{serviceName}:
+      get:
+         summary: Info for a specific user
+         operationId: findServiceById
+         parameters:
+         -  name: serviceName
+            in: path
+            required: true
+            description: The id of the service to retrieve
+            schema:
+               type: string
+
+         responses:
+            '200':
+               description: Expected response to a valid request
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/ServiceDto'
+            default:
+               description: unexpected error
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/Error'
+
+
+   /employee:
+      post:
+         summary: Create a employee
+         operationId: createEmployee
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     $ref: '#/components/schemas/EmployeesDto'
+         responses:
+            '201':
+               description: Null response
+            default:
+               description: unexpected error
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/Error'
+
+
+   /employee/find/{firstname}/{lastname}:
+      get:
+         summary: Info for a specific user
+         operationId: findEmployeeById
+         parameters:
+         -  name: firstname
+            in: path
+            required: true
+            description: The id of the employee to retrieve
+            schema:
+               type: string
+         -  name: lastname
+            in: path
+            required: true
+            description: The id of the employee to retrieve
+            schema:
+               type: string
+         responses:
+            '200':
+               description: Expected response to a valid request
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/EmployeeDto'
+            default:
+               description: unexpected error
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/Error'
+
+components:
+   schemas:
+
+      ServiceDto:
+         type: object
+         required:
+         - name
+         properties:
+            name:
+               type: string
+               description: Service / Subservice
+               example: service1
+            parent:
+               type: string
+               description: Service parent / Subservice parent
+               example: service1
+
+      ServicesDto:
+         type: array
+         items:
+            $ref: '#/components/schemas/ServiceDto'
+
+
+      ParentDto:
+         type: object
+         required:
+         - firstname
+         - lastname
+         - family_ties
+         properties:
+            firstname:
+               type: string
+               description: John
+               example: John
+            lastname:
+               type: string
+               description: Daniel
+               example: Daniel
+            family_ties:
+               type: string
+               description: Family ties
+               example: brother
+
+      ContractDto:
+         type: object
+         required:
+         - signature
+         - duration
+         - salary
+         properties:
+            signature:
+               type: string
+               pattern: ^\d{4}-\d{2}-\d{2}$
+               example: 2024-10-27T00:00:00Z
+            duration:
+               type: integer
+               example: 365
+            salary:
+               type: number
+               example: 5000.99
+
+      EmployeeDto:
+         type: object
+         required:
+         - firstname
+         - lastname
+         properties:
+            firstname:
+               type: string
+               description: John
+               example: John
+            lastname:
+               type: string
+               description: Daniel
+               example: Daniel
+            birthdate:
+               type: string
+               pattern: ^\d{4}-\d{2}-\d{2}$
+               example: 2000-10-27T00:00:00Z
+            manager:
+               type: boolean
+               description: manager
+               example: false
+            parent:
+               type: array
+               items:
+                  $ref: '#/components/schemas/ParentDto'
+            contract:
+               type: array
+               items:
+                  $ref: '#/components/schemas/ContractDto'
+            service:
+               type: array
+               items:
+                  $ref: '#/components/schemas/ServiceDto'
+
+      EmployeesDto:
+         type: array
+         items:
+            $ref: '#/components/schemas/EmployeeDto'
+
+
+
+      Error:
+         type: object
+         required:
+         - code
+         - message
+         properties:
+            code:
+               type: integer
+               format: int32
+            message:
+               type: string

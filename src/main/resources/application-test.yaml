@@ -1,0 +1,40 @@
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:dbname
+  jpa: 
+    show-sql: true
+    hibernate.ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  banner-mode: off
+
+# http://localhost:9090/swagger-ui/swagger-ui.html
+server.port: 9090
+
+
+springdoc:
+   show-actuator: true
+   swagger-ui:
+      enabled: true
+      # path: /swagger-ui.html
+      tryItOutEnabled: false
+      filter: true
+      syntaxHighlight.activated: true
+      display-request-duration: true
+      # disable-swagger-default-url: true
+      use-root-path: true
+
+logging:
+   pattern:
+      console: "%d{HH:mm:ss.SSS} %highlight(%-5level) %magenta([%c{1} %line]) %msg%n"
+   level:
+      root: INFO # DEBUG
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+
+
