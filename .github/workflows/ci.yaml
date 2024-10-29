@@ -30,10 +30,14 @@ jobs:
         distribution: 'temurin'
         java-version: '21'
         cache: 'maven'
+  
+     # Compilation & packaging
+    - name: Compilation & Packaging
+      run: mvn -DskipTests=true clean package
 
-    # Compilation & packaging
-    - name: Compilation & Packaging & Test
-      run: mvn clean generate-sources package
+    # Test
+    - name: Test
+      run: mvn test
      
     # Stockage de l'archive sur le depôt Github
     - name: Upload build artifacts
