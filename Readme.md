@@ -2,91 +2,11 @@
 
 <br>
 
-## 1. Exécution
+## 1. Tests
 
-### 1.1. Local
+### 1.1. Exercice 1 - DB
 
-#### 1.1.1. Direct
-
-- Implémentation du fichier *openapi* &nbsp;&#8640;&nbsp; `mvn clean generate-sources`
-- Build & exécution des tests *Junit* &nbsp;&#8640;&nbsp; `mvn clean package`
-- Lancement du serveur &nbsp;&#8640;&nbsp; `mvn clean compile spring-boot:run`
-- Interface [swagger-ui](http://localhost:9090/swagger-ui/index.html).
-- Base de données [h2-console](http://localhost:9090/h2-console)
-
-#### 1.1.2. Dockerfile
-- Mettre à jour le nom de l'archive (*itsf.war*) dans le fichiers [*Dockerfile*](https://github.com/gizaoui/itsf/blob/main/Dockerfile).
-- Construction de l'image &nbsp;&#8640;&nbsp; `mvn clean package && drm && docker build -t itsf .`
-- Lancement de l'image &nbsp;&#8640;&nbsp; `docker run -it --publish 9090:9090 --name myitsf itsf`
-- Connexion au *container* *Tomcat* &nbsp;&#8640;&nbsp; `docker exec -it myitsf /bin/bash`
-- Interface [swagger-ui](http://localhost:9090/itsf/swagger-ui/index.html) via l'image *Tomcat*.
-- Base de données [h2-console](http://localhost:9090/itsf/h2-console)
-
-### 1.2. CI GitHub
-
-- Créer un *repository* [hub.docker](https://hub.docker.com/) nommé *itsf* tel que définie au bas du fichier [*ci.yaml*](https://github.com/gizaoui/itsf/blob/main/.github/workflows/ci.yaml).
-- Mettre à jour le nom de l'archive (*itsf.war*) dans les fichiers [*ci.yaml*](https://github.com/gizaoui/itsf/blob/main/.github/workflows/ci.yaml) et [*Dockerfile*](https://github.com/gizaoui/itsf/blob/main/Dockerfile).
-- [Build](https://github.com/gizaoui/itsf/actions) & création de l'image [docker](https://hub.docker.com/repository/docker/gizaoui/itsf/general) &nbsp;&#8640;&nbsp; `git commit -m "." . && git push`
-- Lancement de l'image &nbsp;&#8640;&nbsp; `drm && docker run -it --publish 9090:9090 --name myitsf gizaoui/itsf:1.0.0`
-- Connexion au *container* *Tomcat* &nbsp;&#8640;&nbsp; `docker exec -it myitsf /bin/bash`
-- Interface [swagger-ui](http://localhost:9090/itsf/swagger-ui/index.html) via l'image *Tomcat*.
-- Base de données [h2-console](http://localhost:9090/itsf/h2-console)
-
-
-### 1.3. Bases de données
-
-La configuration de connexion est définie dans le fichier [*application.yaml*](https://github.com/gizaoui/itsf/blob/main/src/main/resources/application.yaml)<br>
-Base de données est initialisée au lancement du projet via la fichier [*EmployeesApplication.java*](https://github.com/gizaoui/itsf/blob/main/src/main/java/com/example/EmployeesApplication.java)
-
-#### 1.3.1 H2
-
-C'est la configuration de connexion par défaut. 
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:h2:mem:dbname
-...
-```
-
-La librairie *h2database* met à disposition une interface d'exploitation.<br>
-Le paramètre *JDBC URL* est configuré avec celui du fichier de configuration (*jdbc:h2:mem:dbname*).
-
-![h2_console](pic/h2_console.png)
-
-
-#### 1.3.2 PostgreSQL
-
-Mettre à jour le fichier de configuraton [*application.yaml*](https://github.com/gizaoui/itsf/blob/main/src/main/resources/application.yaml) avec celui du fichier [*application-postgres.yaml*](https://github.com/gizaoui/itsf/blob/main/src/main/resources/application-postgres.yaml) (copié-collé). 
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/itsfdb
-    username: postgres
-    password: postgres
-  jpa:
-    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-...
-```
-
-La librairie *h2database* permet également de se connecter à la base de données *Postgres*.<br>
-Le paramètre *JDBC URL* est configuré avec celui du fichier de configuration (*jdbc:postgresql://localhost:5432/itsfdb*).
-
-![postgres](pic/postgres.png)
-
-
-<br>
-
----
-
-<br>
-
-## 2. Tests
-
-### 2.1. Exercice 1 - DB
-
-#### 2.1.1 Faire un schema de base de données
+#### 1.1.1 Faire un schema de base de données
 
 - Dans une entreprise on a des salariés qui ont chacun un nom - prenom - **date de naissance**.
 - Chaque salarié dispose d'un ou plusieurs **contrats** qui contiennent la date de signature - la duree - le salaire.
@@ -95,9 +15,9 @@ Le paramètre *JDBC URL* est configuré avec celui du fichier de configuration (
 - Chaque employee peut avoir plusieurs **services**
 
 
-#### 2.1.2 Solution
+#### 1.1.2 Solution
 
-#### 2.1.2.1 Analyse
+#### 1.1.2.1 Analyse
 
 Le descriptif du modèle de données laisse apparaître quatre entités distinctes regroupées dans deux entités principales.
 
@@ -119,7 +39,7 @@ Les entités **employé** et **service** doivent pouvoir exister séparément m�
 
 <br>
 
-#### 2.1.2.2 Modèle de données
+#### 1.1.2.2 Modèle de données
 
 Le modèle de données, produit par du *build*, est le suivant:
 
@@ -146,9 +66,9 @@ alter table if exists parent add constraint FK7s1qy60k0ymom85ifpi08nr5b foreign 
 ```
 
 
-### 2.2. Exercice 2 - Code / Scripting
+### 1.2. Exercice 2 - Code / Scripting
 
-#### 2.2.1. Création d'un test *Junit*
+#### 1.2.1. Création d'un test *Junit*
 
 - Faire une boucle de 1 a 100
 - quand on rencontre un multiple de 3 imprimer "Chausettes"
@@ -156,7 +76,7 @@ alter table if exists parent add constraint FK7s1qy60k0ymom85ifpi08nr5b foreign 
 - quand on recontre un multiple de 3 et de 5 imprimer "ChausettesSales"
 - sinon imprimer le nombre
 
-#### 2.2.2. Solution
+#### 1.2.2. Solution
 
 Exécuter de la commande `mvn clean package` pour visualiser le résultat.
 
@@ -196,3 +116,83 @@ Exécuter de la commande `mvn clean package` pour visualiser le résultat.
       }
    }
 ```
+
+<br>
+
+---
+
+<br>
+
+## 2. Exécution
+
+### 2.1. Local
+
+#### 2.1.1. Direct
+
+- Implémentation du fichier *openapi* &nbsp;&#8640;&nbsp; `mvn clean generate-sources`
+- Build & exécution des tests *Junit* &nbsp;&#8640;&nbsp; `mvn clean package`
+- Lancement du serveur &nbsp;&#8640;&nbsp; `mvn clean compile spring-boot:run`
+- Interface [swagger-ui](http://localhost:9090/swagger-ui/index.html).
+- Base de données [h2-console](http://localhost:9090/h2-console)
+
+#### 2.1.2. Dockerfile
+- Mettre à jour le nom de l'archive (*itsf.war*) dans le fichiers [*Dockerfile*](https://github.com/gizaoui/itsf/blob/main/Dockerfile).
+- Construction de l'image &nbsp;&#8640;&nbsp; `mvn clean package && drm && docker build -t itsf .`
+- Lancement de l'image &nbsp;&#8640;&nbsp; `docker run -it --publish 9090:9090 --name myitsf itsf`
+- Connexion au *container* *Tomcat* &nbsp;&#8640;&nbsp; `docker exec -it myitsf /bin/bash`
+- Interface [swagger-ui](http://localhost:9090/itsf/swagger-ui/index.html) via l'image *Tomcat*.
+- Base de données [h2-console](http://localhost:9090/itsf/h2-console)
+
+### 2.2. CI GitHub
+
+- Créer un *repository* [hub.docker](https://hub.docker.com/) nommé *itsf* tel que définie au bas du fichier [*ci.yaml*](https://github.com/gizaoui/itsf/blob/main/.github/workflows/ci.yaml).
+- Mettre à jour le nom de l'archive (*itsf.war*) dans les fichiers [*ci.yaml*](https://github.com/gizaoui/itsf/blob/main/.github/workflows/ci.yaml) et [*Dockerfile*](https://github.com/gizaoui/itsf/blob/main/Dockerfile).
+- [Build](https://github.com/gizaoui/itsf/actions) & création de l'image [docker](https://hub.docker.com/repository/docker/gizaoui/itsf/general) &nbsp;&#8640;&nbsp; `git commit -m "." . && git push`
+- Lancement de l'image &nbsp;&#8640;&nbsp; `drm && docker run -it --publish 9090:9090 --name myitsf gizaoui/itsf:1.0.0`
+- Connexion au *container* *Tomcat* &nbsp;&#8640;&nbsp; `docker exec -it myitsf /bin/bash`
+- Interface [swagger-ui](http://localhost:9090/itsf/swagger-ui/index.html) via l'image *Tomcat*.
+- Base de données [h2-console](http://localhost:9090/itsf/h2-console)
+
+
+### 2.3. Bases de données
+
+La configuration de connexion est définie dans le fichier [*application.yaml*](https://github.com/gizaoui/itsf/blob/main/src/main/resources/application.yaml)<br>
+Base de données est initialisée au lancement du projet via la fichier [*EmployeesApplication.java*](https://github.com/gizaoui/itsf/blob/main/src/main/java/com/example/EmployeesApplication.java)
+
+#### 2.3.1 H2
+
+C'est la configuration de connexion par défaut. 
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:h2:mem:dbname
+...
+```
+
+La librairie *h2database* met à disposition une interface d'exploitation.<br>
+Le paramètre *JDBC URL* est configuré avec celui du fichier de configuration (*jdbc:h2:mem:dbname*).
+
+![h2_console](pic/h2_console.png)
+
+
+#### 2.3.2 PostgreSQL
+
+Mettre à jour le fichier de configuraton [*application.yaml*](https://github.com/gizaoui/itsf/blob/main/src/main/resources/application.yaml) avec celui du fichier [*application-postgres.yaml*](https://github.com/gizaoui/itsf/blob/main/src/main/resources/application-postgres.yaml) (copié-collé). 
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/itsfdb
+    username: postgres
+    password: postgres
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+...
+```
+
+La librairie *h2database* permet également de se connecter à la base de données *Postgres*.<br>
+Le paramètre *JDBC URL* est configuré avec celui du fichier de configuration (*jdbc:postgresql://localhost:5432/itsfdb*).
+
+![postgres](pic/postgres.png)
+
